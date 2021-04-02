@@ -18,7 +18,7 @@ typedef enum {
 
 /* DFA state */
 typedef enum {
-	START,INASSIGN,INCOMMENT,INNUM,INID,DONE
+	START, INASSIGN, INCOMMENT, INNUM, INID, DONE
 } StateType;
 
 /* reserved words talbe */
@@ -37,5 +37,44 @@ TokenType reservedLookup(char* s) {
 	return ID;
 }
 
-void main() {
+/* global variables */
+int line_num = 0;
+FILE* fpIn;
+FILE* fpOut;
+FILE* code;
+
+TokenType getToken(void) {
+	return ID; // just test
+}
+
+/* main */
+void main(int argc, char* argv[]) {
+	char inputFile[50], outputFile[50];
+
+	if (argc != 3) {
+		fprintf(stderr, "usage: %s <input_file.c> <output_file.txt>\n", argv[0]);
+		exit(1);
+	}
+
+	/* check for file extension */
+	strcpy(inputFile, argv[1]);
+	if (strchr(inputFile, '.') == NULL)
+		strcat(inputFile, ".c");
+	strcpy(outputFile, argv[2]);
+	if (strchr(outputFile, '.') == NULL)
+		strcat(outputFile, ".txt");
+
+	fpIn = fopen(inputFile, "r");
+	fpOut = fopen(outputFile, "w");
+	if (fpIn == NULL) {
+		fprintf(stderr, "File %s not found\n", inputFile);
+		exit(1);
+	}
+
+	fprintf(fpOut, "\nC- COMPILATION: %s\n", inputFile);
+
+	while (getToken() != ENDFILE);
+
+	fclose(fpIn);
+	fclose(fpOut);
 }
