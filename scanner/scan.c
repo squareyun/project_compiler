@@ -3,6 +3,7 @@
 
 #define MAXRESERVED 6
 
+/* token type */
 typedef enum {
 	/* book-keeping tokens */
 	ERROR,
@@ -14,6 +15,11 @@ typedef enum {
 	/* multicharacter tokens */
 	ID, NUM
 } TokenType;
+
+/* DFA state */
+typedef enum {
+	START,INASSIGN,INCOMMENT,INNUM,INID,DONE
+} StateType;
 
 /* reserved words talbe */
 struct {
