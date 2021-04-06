@@ -25,7 +25,7 @@ typedef enum {
 
 /* DFA state */
 typedef enum {
-	START, INNUM, INID, INLT, INGT, INASSIGN, INNE, INDIV, INCOMMENT, INCOMMENT2, DONE
+	START, INNUM, IDNUMERROR, INID, INLT, INGT, INASSIGN, INNE, INDIV, INCOMMENT, INCOMMENT2, DONE
 } StateType;
 
 /* reserved words talbe */
@@ -66,7 +66,7 @@ int getNextChar() {
 		lineno++;
 		if (fgets(lineBuf, BUFLEN - 1, fpIn)) {
 			fprintf(fpOut, "%4d: %s", lineno, lineBuf);
-			bufsize = strlen(lineBuf);
+			bufsize = (int)strlen(lineBuf);
 			linepos = 0;
 			return lineBuf[linepos++];
 		}
@@ -78,7 +78,7 @@ int getNextChar() {
 	return lineBuf[linepos++]; // 다음 char 반환
 }
 
-/* Lookahead function
+/* Lookahead function.
    delimiter을 만났을 때 버리지 않고 backing up */
 void ungetNextChar() {
 	if (!EOF_flag)
@@ -132,10 +132,10 @@ void printToken(TokenType token, const char* tokenString) {
 
 /* return next token in source file */
 TokenType getToken(void) {
-	int tokenStringIndex = 0;
-	TokenType currentToken = STARTFILE;
-	StateType state = START; // 시작 state는 항상 START
-	int save; // tokenString에 토큰을 저장할지 확인하는 flag
+	int tokenStringIndex = 0;			// 토큰 문자열을 저장할 때 사용하는 index 변수
+	TokenType currentToken = STARTFILE;	// 초기화 에러가 발생하여 만든 임시 토큰
+	StateType state = START;			// 시작 state는 항상 START
+	int save;							// tokenString에 토큰을 저장할지 확인하는 flag
 	while (state != DONE)
 	{
 		int c = getNextChar();
@@ -209,11 +209,7 @@ TokenType getToken(void) {
 			break;
 		case INNUM:
 			if (isalpha(c))  /* number 다음 ID가 오는 경우 에러토큰으로 인식 */
-			{
-				state = DONE;
-				ungetNextChar();
-				currentToken = ERROR;
-			}
+				state = IDNUMERROR;
 			else if (!isdigit(c))
 			{
 				state = DONE;
@@ -222,14 +218,23 @@ TokenType getToken(void) {
 				currentToken = NUM;
 			}
 			break;
+		case IDNUMERROR:
+			if (!isalpha(c) && !isdigit(c)) {
+				state = DONE;
+				ungetNextChar();
+				save = FALSE;
+				currentToken = ERROR;
+			}
+			break;
 		case INID:
-			if (!isalpha(c))
+			if (isdigit(c))	/* ID 다음 number가 오는 경우 에러토큰으로 인식 */
+				state = IDNUMERROR;
+			else if (!isalpha(c))
 			{
 				ungetNextChar();
 				save = FALSE;
 				state = DONE;
-				if (currentToken != ERROR)
-					currentToken = ID;
+				currentToken = ID;
 			}
 			break;
 		case INLT:
@@ -291,20 +296,15 @@ TokenType getToken(void) {
 			save = FALSE;
 			if (c == EOF)
 			{
-				state = DONE;
-				currentToken = ENDFILE;
+				fprintf(fpOut, "ERROR: %s\n", "\"stop before ending\"");
+				exit(EXIT_FAILURE);
 			}
 			else if (c == '*')
 				state = INCOMMENT2;
 			break;
 		case INCOMMENT2:
 			save = FALSE;
-			if (c == EOF)
-			{
-				state = DONE;
-				currentToken = ENDFILE;
-			}
-			else if (c == '/')
+			if (c == '/')
 				state = START;
 			else if (c != '*')
 				state = INCOMMENT;
