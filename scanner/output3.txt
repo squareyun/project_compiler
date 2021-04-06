@@ -1,0 +1,77 @@
+C- COMPILATION: output3.c
+   1: x+y
+	1: ID, name= x
+	1: +
+	1: ID, name= y
+   2: x  +  y
+	2: ID, name= x
+	2: +
+	2: ID, name= y
+   3: 
+   4: xyz=3
+	4: ID, name= xyz
+	4: =
+	4: NUM, val= 3
+   5: xyz    =    3
+	5: ID, name= xyz
+	5: =
+	5: NUM, val= 3
+   6: 
+   7: abc     xyz
+	7: ID, name= abc
+	7: ID, name= xyz
+   8: if    return
+	8: reserved word: if
+	8: reserved word: return
+   9: abc     1234
+	9: ID, name= abc
+	9: NUM, val= 1234
+  10: 561     1234
+	10: NUM, val= 561
+	10: NUM, val= 1234
+  11: >    =
+	11: >
+	11: =
+  12: 
+  13: xyz!=10/*comment*/
+	13: ID, name= xyz
+	13: !=
+	13: NUM, val= 10
+  14: xyz!/*comment*/=10
+	14: ID, name= xyz
+	14: ERROR: !
+	14: =
+	14: NUM, val= 10
+  15: 
+  16: 
+  17: 111  aaa
+	17: NUM, val= 111
+	17: ID, name= aaa
+  18: 111#aaa
+	18: NUM, val= 111
+	18: ERROR: #
+	18: ID, name= aaa
+  19: 111aaa
+	19: ERROR: 111aaa
+  20: 
+  21: aaa111
+	21: ERROR: aaa111
+  22: aaa#111
+	22: ID, name= aaa
+	22: ERROR: #
+	22: NUM, val= 111
+  23: aaa  111
+	23: ID, name= aaa
+	23: NUM, val= 111
+  24: 
+  25: 
+  26: /   *comment*/
+	26: /
+	26: *
+	26: ID, name= comment
+	26: *
+	26: /
+  27: 
+  28: /*   comment  *   /
+  29: a=1
+ERROR: "stop before ending"
