@@ -1,77 +1,98 @@
-C- COMPILATION: output3.c
-   1: x+y
-	1: ID, name= x
-	1: +
-	1: ID, name= y
-   2: x  +  y
-	2: ID, name= x
-	2: +
-	2: ID, name= y
-   3: 
-   4: xyz=3
-	4: ID, name= xyz
-	4: =
-	4: NUM, val= 3
-   5: xyz    =    3
-	5: ID, name= xyz
-	5: =
-	5: NUM, val= 3
-   6: 
-   7: abc     xyz
-	7: ID, name= abc
-	7: ID, name= xyz
-   8: if    return
-	8: reserved word: if
-	8: reserved word: return
-   9: abc     1234
-	9: ID, name= abc
-	9: NUM, val= 1234
-  10: 561     1234
-	10: NUM, val= 561
-	10: NUM, val= 1234
-  11: >    =
-	11: >
-	11: =
-  12: 
-  13: xyz!=10/*comment*/
-	13: ID, name= xyz
-	13: !=
-	13: NUM, val= 10
-  14: xyz!/*comment*/=10
-	14: ID, name= xyz
-	14: ERROR: !
-	14: =
-	14: NUM, val= 10
-  15: 
+C- COMPILATION: input3.c
+   1: if (score!  =200) /* this includes error **/ num = 98F;
+	1: reserved word: if
+	1: (
+	1: ID, name= score
+	1: ERROR: !
+	1: =
+	1: NUM, val= 200
+	1: )
+	1: ID, name= num
+	1: =
+	1: ERROR: 98F
+	1: ;
+   2: 
+   3: x = 1/2;
+	3: ID, name= x
+	3: =
+	3: NUM, val= 1
+	3: /
+	3: NUM, val= 2
+	3: ;
+   4: 
+   5: x+y
+	5: ID, name= x
+	5: +
+	5: ID, name= y
+   6: x  +  y
+	6: ID, name= x
+	6: +
+	6: ID, name= y
+   7: 
+   8: xyz=3
+	8: ID, name= xyz
+	8: =
+	8: NUM, val= 3
+   9: xyz    =    3
+	9: ID, name= xyz
+	9: =
+	9: NUM, val= 3
+  10: 
+  11: abc     xyz
+	11: ID, name= abc
+	11: ID, name= xyz
+  12: if    return
+	12: reserved word: if
+	12: reserved word: return
+  13: abc     1234
+	13: ID, name= abc
+	13: NUM, val= 1234
+  14: 561     1234
+	14: NUM, val= 561
+	14: NUM, val= 1234
+  15: >    =
+	15: >
+	15: =
   16: 
-  17: 111  aaa
-	17: NUM, val= 111
-	17: ID, name= aaa
-  18: 111#aaa
-	18: NUM, val= 111
-	18: ERROR: #
-	18: ID, name= aaa
-  19: 111aaa
-	19: ERROR: 111aaa
+  17: xyz!=10/*comment*/
+	17: ID, name= xyz
+	17: !=
+	17: NUM, val= 10
+  18: xyz!/*comment*/=10
+	18: ID, name= xyz
+	18: ERROR: !
+	18: =
+	18: NUM, val= 10
+  19: 
   20: 
-  21: aaa111
-	21: ERROR: aaa111
-  22: aaa#111
-	22: ID, name= aaa
-	22: ERROR: #
+  21: 111  aaa
+	21: NUM, val= 111
+	21: ID, name= aaa
+  22: 111#aaa
 	22: NUM, val= 111
-  23: aaa  111
-	23: ID, name= aaa
-	23: NUM, val= 111
+	22: ERROR: #
+	22: ID, name= aaa
+  23: 111aaa
+	23: ERROR: 111aaa
   24: 
-  25: 
-  26: /   *comment*/
-	26: /
-	26: *
-	26: ID, name= comment
-	26: *
-	26: /
-  27: 
-  28: /*   comment  *   /
-  29: a=1
+  25: aaa111
+	25: ERROR: aaa111
+  26: aaa#111
+	26: ID, name= aaa
+	26: ERROR: #
+	26: NUM, val= 111
+  27: aaa  111
+	27: ID, name= aaa
+	27: NUM, val= 111
+  28: 
+  29: 
+  30: /   *comment*/
+	30: /
+	30: *
+	30: ID, name= comment
+	30: *
+	30: /
+  31: 
+  32: /*   comment  *   /
+  33: a=1
 ERROR: "stop before ending"

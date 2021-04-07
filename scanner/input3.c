@@ -1,3 +1,7 @@
+if (score!  =200) /* this includes error **/ num = 98F;
+
+x = 1/2;
+
 x+y
 x  +  y
 
