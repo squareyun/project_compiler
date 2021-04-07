@@ -132,13 +132,13 @@ void printToken(TokenType token, const char* tokenString) {
 
 /* return next token in source file */
 TokenType getToken(void) {
-	int tokenStringIndex = 0;			// 토큰 문자열을 저장할 때 사용하는 index 변수
-	TokenType currentToken = STARTFILE;	// 초기화 에러가 발생하여 만든 임시 토큰
+	int tokenStringIndex = 0;			// 토큰 문자열(tokenString)의 index
+	TokenType currentToken = STARTFILE;	// 현재 토큰
 	StateType state = START;			// 시작 state는 항상 START
 	int save;							// tokenString에 토큰을 저장할지 확인하는 flag
-	while (state != DONE)
+	while (state != DONE)	// 토큰이 DONE이 아닐 때 까지 반복
 	{
-		int c = getNextChar();
+		int c = getNextChar();	// 다음 character 읽어오기
 		save = TRUE;
 		switch (state)
 		{
@@ -201,37 +201,42 @@ TokenType getToken(void) {
 				case '}':
 					currentToken = RCURLY;
 					break;
-				default:
+				default: // 에러토큰
 					currentToken = ERROR;
 					break;
 				}
 			}
 			break;
 		case INNUM:
-			if (isalpha(c))  /* number 다음 ID가 오는 경우 에러토큰으로 인식 */
+			// digit을 읽으면 전이 X
+			// digit과 letter가 붙는 경우 에러토큰으로 인식 (e.g., 111aaa)
+			if (isalpha(c))
 				state = IDNUMERROR;
 			else if (!isdigit(c))
 			{
 				state = DONE;
-				ungetNextChar();
+				ungetNextChar();	// Lookahead. 문자를 소모하지 않고 되돌리는 함수
 				save = FALSE;
 				currentToken = NUM;
 			}
 			break;
 		case IDNUMERROR:
+			// digit 또는 letter을 읽으면 전이 X
 			if (!isalpha(c) && !isdigit(c)) {
 				state = DONE;
-				ungetNextChar();
+				ungetNextChar();	// Lookahead
 				save = FALSE;
 				currentToken = ERROR;
 			}
 			break;
 		case INID:
-			if (isdigit(c))	/* ID 다음 number가 오는 경우 에러토큰으로 인식 */
+			// letter을 읽으면 전이 X
+			// letter과 digit이 붙는 경우 에러토큰으로 인식 (e.g., aaa111)
+			if (isdigit(c))
 				state = IDNUMERROR;
 			else if (!isalpha(c))
 			{
-				ungetNextChar();
+				ungetNextChar();	// Lookahead
 				save = FALSE;
 				state = DONE;
 				currentToken = ID;
@@ -239,63 +244,64 @@ TokenType getToken(void) {
 			break;
 		case INLT:
 			state = DONE;
-			if (c == '=')
+			if (c == '=')	// 토큰 '<='을 인식
 				currentToken = LE;
 			else
 			{
-				ungetNextChar();
+				ungetNextChar();	// Lookahead
 				save = FALSE;
 				currentToken = LT;
 			}
 			break;
 		case INGT:
 			state = DONE;
-			if (c == '=')
+			if (c == '=')	// 토큰 '>='을 인식
 				currentToken = GE;
 			else
 			{
-				ungetNextChar();
+				ungetNextChar();	// Lookahead
 				save = FALSE;
 				currentToken = GT;
 			}
 			break;
 		case INASSIGN:
 			state = DONE;
-			if (c == '=')
+			if (c == '=')	// 토큰 '=='을 인식
 				currentToken = EQ;
 			else
 			{
-				ungetNextChar();
+				ungetNextChar();	// Lookahead
 				save = FALSE;
 				currentToken = ASSIGN;
 			}
 			break;
 		case INNE:
 			state = DONE;
-			if (c == '=')
+			if (c == '=')	// 토큰 '!='을 인식
 				currentToken = NE;
 			else
 			{
-				ungetNextChar();
+				ungetNextChar();	// Lookahead
 				save = FALSE;
 				currentToken = ERROR;
 			}
 			break;
 		case INDIV:
-			if (c == '*') {
-				save = FALSE;
+			if (c == '*') {		// '/*' 으로 comment의 시작을 인식
+				save = FALSE;	// comment는 save 하지 않음
 				state = INCOMMENT;
 			}
 			else {
+				ungetNextChar();	// Lookahead
 				state = DONE;
 				currentToken = DIV;
 			}
 			break;
 		case INCOMMENT:
-			tokenStringIndex = 0;	// tokenString에 이미 저장된 토큰(/)를 지우기 위함
+			// *이 아닌 character를 읽으면 전이 X
+			tokenStringIndex = 0;	// tokenString에 이미 저장된 character(/)를 무시하기 위한 조치
 			save = FALSE;
-			if (c == EOF)
-			{
+			if (c == EOF) {			// non-final state에서 프로그램이 종료되면 에러 메세지 출력
 				fprintf(fpOut, "ERROR: %s\n", "\"stop before ending\"");
 				exit(EXIT_FAILURE);
 			}
@@ -303,6 +309,7 @@ TokenType getToken(void) {
 				state = INCOMMENT2;
 			break;
 		case INCOMMENT2:
+			// *를 읽으면 전의 X
 			save = FALSE;
 			if (c == '/')
 				state = START;
@@ -317,11 +324,12 @@ TokenType getToken(void) {
 			break;
 		}
 		if ((save) && (tokenStringIndex <= MAXTOKENLEN))
-			tokenString[tokenStringIndex++] = (char)c;
+			tokenString[tokenStringIndex++] = (char)c;		// 토큰 문자열에 character 추가
 		if (state == DONE)
 		{
 			tokenString[tokenStringIndex] = '\0';
 			if (currentToken == ID)
+				// ID(식별자)가 예약어 테이블에 있는지 확인. 있으면 해당 예약어 토큰이 반환됨
 				currentToken = reservedLookup(tokenString);
 		}
 	}
@@ -350,7 +358,7 @@ void main(int argc, char* argv[]) {
 
 	fpIn = fopen(inputFile, "r");
 	fpOut = fopen(outputFile, "w");
-	// fpOut = stdout; //for test
+	// fpOut = stdout; // for test
 	if (fpIn == NULL) {
 		fprintf(stderr, "File %s not found\n", inputFile);
 		exit(1);
