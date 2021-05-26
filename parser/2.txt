@@ -1,0 +1,432 @@
+C- COMPILATION: 2.c
+   1: /* A program to perform selection sort on a 10
+   2:    element array. */
+   3: 
+   4: int x[10];
+	4: reserved word: int
+	4: ID, name= x
+	4: [
+	4: NUM, val= 10
+	4: ]
+	4: ;
+   5: 
+   6: int minloc ( int a[], int low, int high )
+	6: reserved word: int
+	6: ID, name= minloc
+	6: (
+	6: reserved word: int
+	6: ID, name= a
+	6: [
+	6: ]
+	6: ,
+	6: reserved word: int
+	6: ID, name= low
+	6: ,
+	6: reserved word: int
+	6: ID, name= high
+	6: )
+   7: {	int i; int x; int k;
+	7: {
+	7: reserved word: int
+	7: ID, name= i
+	7: ;
+	7: reserved word: int
+	7: ID, name= x
+	7: ;
+	7: reserved word: int
+	7: ID, name= k
+	7: ;
+   8: 	k = low;
+	8: ID, name= k
+	8: =
+	8: ID, name= low
+	8: ;
+   9: 	x = a[low];
+	9: ID, name= x
+	9: =
+	9: ID, name= a
+	9: [
+	9: ID, name= low
+	9: ]
+	9: ;
+  10: 	i = low + 1;
+	10: ID, name= i
+	10: =
+	10: ID, name= low
+	10: +
+	10: NUM, val= 1
+	10: ;
+  11: 	while (i < high)
+	11: reserved word: while
+	11: (
+	11: ID, name= i
+	11: <
+	11: ID, name= high
+	11: )
+  12: 	{	if (a[i] < x)
+	12: {
+	12: reserved word: if
+	12: (
+	12: ID, name= a
+	12: [
+	12: ID, name= i
+	12: ]
+	12: <
+	12: ID, name= x
+	12: )
+  13: 			{ x = a[i];
+	13: {
+	13: ID, name= x
+	13: =
+	13: ID, name= a
+	13: [
+	13: ID, name= i
+	13: ]
+	13: ;
+  14: 			  k = i;  }
+	14: ID, name= k
+	14: =
+	14: ID, name= i
+	14: ;
+	14: }
+  15: 		i = i + 1;
+	15: ID, name= i
+	15: =
+	15: ID, name= i
+	15: +
+	15: NUM, val= 1
+	15: ;
+  16: 	}
+	16: }
+  17: 	return k;
+	17: reserved word: return
+	17: ID, name= k
+	17: ;
+  18: }
+	18: }
+  19: 
+  20: void sort( int a[], int low, int high)
+	20: reserved word: void
+	20: ID, name= sort
+	20: (
+	20: reserved word: int
+	20: ID, name= a
+	20: [
+	20: ]
+	20: ,
+	20: reserved word: int
+	20: ID, name= low
+	20: ,
+	20: reserved word: int
+	20: ID, name= high
+	20: )
+  21: {	int i; int k;
+	21: {
+	21: reserved word: int
+	21: ID, name= i
+	21: ;
+	21: reserved word: int
+	21: ID, name= k
+	21: ;
+  22: 	i = low;	
+	22: ID, name= i
+	22: =
+	22: ID, name= low
+	22: ;
+  23: 
+  24: 	while (i < high-1)
+	24: reserved word: while
+	24: (
+	24: ID, name= i
+	24: <
+	24: ID, name= high
+	24: -
+	24: NUM, val= 1
+	24: )
+  25: 	{	int t;
+	25: {
+	25: reserved word: int
+	25: ID, name= t
+	25: ;
+  26: 		k = minloc(a,i,high,i);
+	26: ID, name= k
+	26: =
+	26: ID, name= minloc
+	26: (
+	26: ID, name= a
+	26: ,
+	26: ID, name= i
+	26: ,
+	26: ID, name= high
+	26: ,
+	26: ID, name= i
+	26: )
+	26: ;
+  27: 		t = a[k];
+	27: ID, name= t
+	27: =
+	27: ID, name= a
+	27: [
+	27: ID, name= k
+	27: ]
+	27: ;
+  28: 		a[k] = a[i];
+	28: ID, name= a
+	28: [
+	28: ID, name= k
+	28: ]
+	28: =
+	28: ID, name= a
+	28: [
+	28: ID, name= i
+	28: ]
+	28: ;
+  29: 		a[i] = t;
+	29: ID, name= a
+	29: [
+	29: ID, name= i
+	29: ]
+	29: =
+	29: ID, name= t
+	29: ;
+  30: 		i = i + 1;
+	30: ID, name= i
+	30: =
+	30: ID, name= i
+	30: +
+	30: NUM, val= 1
+	30: ;
+  31: 	}
+	31: }
+  32: }
+	32: }
+  33: 
+  34: void main(void)
+	34: reserved word: void
+	34: ID, name= main
+	34: (
+	34: reserved word: void
+	34: )
+  35: {	int i;
+	35: {
+	35: reserved word: int
+	35: ID, name= i
+	35: ;
+  36: 	i = 0;
+	36: ID, name= i
+	36: =
+	36: NUM, val= 0
+	36: ;
+  37: 	while (i < 10)
+	37: reserved word: while
+	37: (
+	37: ID, name= i
+	37: <
+	37: NUM, val= 10
+	37: )
+  38: 	{	x[i] = input();
+	38: {
+	38: ID, name= x
+	38: [
+	38: ID, name= i
+	38: ]
+	38: =
+	38: ID, name= input
+	38: (
+	38: )
+	38: ;
+  39: 		i = i + 1; }
+	39: ID, name= i
+	39: =
+	39: ID, name= i
+	39: +
+	39: NUM, val= 1
+	39: ;
+	39: }
+  40: 	sort(x,0,10);
+	40: ID, name= sort
+	40: (
+	40: ID, name= x
+	40: ,
+	40: NUM, val= 0
+	40: ,
+	40: NUM, val= 10
+	40: )
+	40: ;
+  41: 	i = 0;
+	41: ID, name= i
+	41: =
+	41: NUM, val= 0
+	41: ;
+  42: 	while (i < 10)
+	42: reserved word: while
+	42: (
+	42: ID, name= i
+	42: <
+	42: NUM, val= 10
+	42: )
+  43: 	{	output(x[i]);
+	43: {
+	43: ID, name= output
+	43: (
+	43: ID, name= x
+	43: [
+	43: ID, name= i
+	43: ]
+	43: )
+	43: ;
+  44: 		i = i + 1; }
+	44: ID, name= i
+	44: =
+	44: ID, name= i
+	44: +
+	44: NUM, val= 1
+	44: ;
+	44: }
+  45: }
+	45: }
+	46: EOF
+
+Syntax tree:
+  Declare array: x[10], type: int
+  Declare function: minloc, type: int
+    params:
+      Declare array: a[], type: int
+      Declare variable: low, type: int
+      Declare variable: high, type: int
+    Function Body:
+      Declare variable: i, type: int
+      Declare variable: x, type: int
+      Declare variable: k, type: int
+      assign:
+          Id: k
+          Id: low
+      assign:
+          Id: x
+          Id: a
+              Id: low
+      assign:
+          Id: i
+          Op: +
+              Id: low
+              Const: 1
+      while:
+        Condition:
+          Op: <
+              Id: i
+              Id: high
+        Body:
+          if:
+            Condition:
+              Op: <
+                  Id: a
+                      Id: i
+                  Id: x
+            Body:
+              assign:
+                  Id: x
+                  Id: a
+                      Id: i
+              assign:
+                  Id: k
+                  Id: i
+          assign:
+              Id: i
+              Op: +
+                  Id: i
+                  Const: 1
+      return:
+        Id: k
+  Declare function: sort, type: void
+    params:
+      Declare array: a[], type: int
+      Declare variable: low, type: int
+      Declare variable: high, type: int
+    Function Body:
+      Declare variable: i, type: int
+      Declare variable: k, type: int
+      assign:
+          Id: i
+          Id: low
+      while:
+        Condition:
+          Op: <
+              Id: i
+              Op: -
+                  Id: high
+                  Const: 1
+        Body:
+          Declare variable: t, type: int
+          assign:
+              Id: k
+              Call: minloc
+                Args:
+                  Id: a
+                  Id: i
+                  Id: high
+                  Id: i
+          assign:
+              Id: t
+              Id: a
+                  Id: k
+          assign:
+              Id: a
+                  Id: k
+              Id: a
+                  Id: i
+          assign:
+              Id: a
+                  Id: i
+              Id: t
+          assign:
+              Id: i
+              Op: +
+                  Id: i
+                  Const: 1
+  Declare function: main, type: void
+    params:
+      Declare variable: (null), type: void
+    Function Body:
+      Declare variable: i, type: int
+      assign:
+          Id: i
+          Const: 0
+      while:
+        Condition:
+          Op: <
+              Id: i
+              Const: 10
+        Body:
+          assign:
+              Id: x
+                  Id: i
+              Call: input
+                Args: nothing
+          assign:
+              Id: i
+              Op: +
+                  Id: i
+                  Const: 1
+      Call: sort
+        Args:
+          Id: x
+          Const: 0
+          Const: 10
+      assign:
+          Id: i
+          Const: 0
+      while:
+        Condition:
+          Op: <
+              Id: i
+              Const: 10
+        Body:
+          Call: output
+            Args:
+              Id: x
+                  Id: i
+          assign:
+              Id: i
+              Op: +
+                  Id: i
+                  Const: 1
